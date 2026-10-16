@@ -1,0 +1,74 @@
+/* ==========================================================================
+   首屏：固定舞台 + 滚动驱动（--p 由 fx-core.js 写入，0..1）
+   滚动只改变图形与文字的显隐，正文始终在自然文档流中
+   ========================================================================== */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.hero { height: 270vh; min-height: 0; padding: 0; display: block; overflow: visible; background: var(--ink); }
+.hero-pin {
+  position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: calc(var(--header-h) + clamp(28px, 6vh, 72px)) var(--gutter) 0;
+}
+.hero-canvas { z-index: 0; }
+.hero-canvas.is-fallback { background: radial-gradient(120% 80% at 70% 0%, #131B23 0%, var(--ink) 60%); }
+.hero-inner {
+  opacity: calc(1 - var(--p, 0) * 2.8);
+  transform: translateY(calc(var(--p, 0) * -70px));
+  will-change: opacity, transform;
+}
+.hero.is-past .hero-inner { visibility: hidden; pointer-events: none; }
+.hero-foot { margin: auto auto 0; padding-bottom: 22px; opacity: calc(1 - var(--p, 0) * 3); }
+.hero-hint { max-width: 60%; }
+
+/* 滚动到中段出现的陈述句：冷色之海 → 日出 */
+.hero-beat {
+  position: absolute; z-index: 2; left: var(--gutter); right: var(--gutter); top: clamp(88px, 17vh, 190px);
+  max-width: var(--maxw); margin: 0 auto; pointer-events: none;
+  opacity: max(0, min(1, calc((var(--p, 0) - .3) * 5), calc((.97 - var(--p, 0)) * 9)));
+  transform: translateY(calc((.5 - var(--p, 0)) * 50px));
+}
+.beat-k { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .24em; color: var(--mist); margin-bottom: 22px; }
+.beat-l1, .beat-l2 { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 7.4vw, 112px); line-height: 1.04; letter-spacing: -.03em; }
+.beat-l1 { color: var(--text-light); }
+.beat-l2 { color: var(--gold); font-style: italic; }
+
+/* 开场：字母逐个升起、其余元素分层飞入（只在加载时播放一次，约 1 秒） */
+.ltr { display: inline-block; transform-origin: 50% 100%; animation: ltr-in 1s var(--ease) backwards; animation-delay: calc(var(--i) * 70ms + 120ms); }
+@keyframes ltr-in { from { opacity: 0; transform: translateY(46%) rotateX(-80deg); filter: blur(10px); } }
+.boot { animation: boot-in .9s var(--ease) backwards; animation-delay: var(--d, 0ms); }
+@keyframes boot-in { from { opacity: 0; transform: perspective(900px) translate3d(0, 26px, -90px) rotateX(14deg); } }
+.type-cursor { display: inline-block; width: .5em; height: 1em; margin-left: 4px; vertical-align: -.12em; background: var(--gold); animation: blink 1.05s steps(1) infinite; }
+.type-cursor.is-done { animation: blink 1.05s steps(1) 4; opacity: 0; animation-fill-mode: forwards; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 头像：指针倾斜 + 环形缓慢转动 */
+.avatar { transform: perspective(720px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s var(--ease); }
+.avatar .o1, .avatar .o2 { transform-box: fill-box; transform-origin: center; }
+.avatar .o1 { animation: spin 40s linear infinite; }
+.avatar .o2 { animation: spin 28s linear infinite reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 页眉下的滚动进度细线 + 指针聚光 */
+.progress-line { position: fixed; top: var(--header-h); left: 0; right: 0; height: 1px; z-index: 51; background: var(--gold); transform: scaleX(var(--sp, 0)); transform-origin: left; opacity: .85; }
+.spot { position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(168, 184, 212, .09), transparent 70%); mix-blend-mode: screen; }
+.spot.on { opacity: 1; }
+
+/* 跑马灯：大号描边字，给页面一个节奏停顿 */
+.marquee { position: relative; z-index: 3; overflow: hidden; padding: clamp(28px, 5vw, 56px) 0; background: var(--ink); border-top: 1px solid var(--ink-line); border-bottom: 1px solid var(--ink-line); }
+.marq-row { display: flex; width: max-content; animation: marq 70s linear infinite; }
+.marq-row + .marq-row { margin-top: 6px; animation-direction: reverse; animation-duration: 90s; }
+.marq-row span { padding: 0 .5em; font-family: var(--font-display); font-size: clamp(44px, 8vw, 120px); line-height: 1.1; letter-spacing: -.02em; color: transparent; -webkit-text-stroke: 1px rgba(237, 232, 222, .3); white-space: nowrap; }
+.marq-row span.sep { color: var(--gold); -webkit-text-stroke: 0; font-size: .6em; align-self: center; padding: 0 .4em; }
+.marq-row:nth-child(2) span:not(.sep) { color: rgba(237, 232, 222, .06); }
+@keyframes marq { to { transform: translateX(-50%); } }
+
+@media (max-width: 820px) {
+  .hero { height: 230vh; }
+  .hero-pin { padding-top: calc(var(--header-h) + 18px); }
+  .hero-beat { top: clamp(84px, 16vh, 140px); }
+}
+
+/* 减少动态：首屏不再随滚动展开，海面停在简介下方的冷色静帧 */
+.reduce-motion .hero { height: auto; }

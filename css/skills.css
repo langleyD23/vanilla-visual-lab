@@ -1,0 +1,241 @@
+/* Skills 区块样式升级 - 3D 地形背景 + 交互式技能图谱 */
+
+.skills-section {
+  position: relative;
+  background: var(--ink-2);
+  color: var(--text-light);
+  padding: clamp(72px, 11vw, 140px) var(--gutter);
+  overflow: hidden;
+}
+
+/* 地形背景 Canvas */
+.terrain-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.skills-section .sec-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* 区块头部 */
+.skills-header {
+  margin-bottom: clamp(40px, 6vw, 64px);
+}
+
+.skills-header .sec-no {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  color: var(--steel);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.skills-header h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(38px, 5.5vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin: 0;
+}
+
+.skills-header .subtitle {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.skills-lead {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-light-2);
+  max-width: 52ch;
+}
+
+/* 技能组网格 */
+.skill-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 48px 56px;
+}
+
+.skill-group {
+  position: relative;
+  padding: 24px;
+  background: rgba(237, 232, 222, .02);
+  border: 1px solid rgba(237, 232, 222, .08);
+  border-radius: 2px;
+  transition: border-color .3s, background .3s;
+}
+
+.skill-group:hover {
+  background: rgba(237, 232, 222, .04);
+  border-color: rgba(237, 232, 222, .14);
+}
+
+.skill-group::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--gold);
+  transition: height .35s var(--ease);
+}
+
+.skill-group:hover::before {
+  height: 100%;
+}
+
+.skill-group h3 {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: var(--steel);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ink-line);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  position: relative;
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 14px;
+  border: 1px solid var(--ink-line);
+  border-radius: 21px;
+  color: var(--text-light);
+  background: rgba(11, 16, 21, .3);
+  transition: border-color .25s, background .25s, color .25s, transform .2s var(--ease);
+  cursor: pointer;
+}
+
+.chip::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 21px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--gold) 0%, transparent 50%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+.chip:hover {
+  border-color: var(--gold);
+  background: rgba(223, 166, 106, .08);
+  transform: translateY(-2px);
+}
+
+.chip:hover::before {
+  opacity: 1;
+}
+
+.chip.is-on,
+.chip[aria-pressed="true"] {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(223, 166, 106, .12);
+}
+
+.chip.is-pinned {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(223, 166, 106, .18);
+  box-shadow: 0 0 0 3px rgba(223, 166, 106, .15);
+}
+
+.chip:active {
+  transform: translateY(0);
+}
+
+/* 技能结果面板 */
+.skill-result {
+  margin-top: 56px;
+  min-height: 96px;
+  padding: 28px 32px;
+  border: 1px solid var(--ink-line);
+  background: rgba(11, 16, 21, .5);
+  border-radius: 2px;
+  font-size: 15px;
+  color: var(--text-light-2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.skill-result .lbl {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--steel);
+  margin-right: 16px;
+  margin-bottom: 12px;
+}
+
+.skill-result a,
+.skill-result button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin: 0 16px 8px 0;
+  padding: 0 4px;
+  border-bottom: 1px solid rgba(223, 166, 106, .6);
+  color: var(--text-light);
+  transition: color .2s, border-color .2s;
+}
+
+.skill-result a:hover,
+.skill-result button:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* 响应式 */
+@media (max-width: 820px) {
+  .skill-groups {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .skill-group {
+    padding: 20px;
+  }
+
+  .skill-result {
+    padding: 20px 24px;
+  }
+}
+
+/* 减少动态 */
+.reduce-motion .chip,
+.reduce-motion .skill-group,
+.reduce-motion .skill-group::before {
+  transition: none;
+}

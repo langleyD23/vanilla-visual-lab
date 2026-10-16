@@ -1,0 +1,236 @@
+/* Experience 时间线样式升级 - 增强视觉层次与动态 */
+
+.tl {
+  position: relative;
+  border-top: 1px solid var(--paper-line);
+  padding: 12px 0;
+}
+
+/* 金线进度 */
+.tl::before, .tl::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+.tl::before {
+  background: var(--paper-line);
+}
+
+.tl::after {
+  background: linear-gradient(to bottom, var(--gold-deep) 0%, var(--gold-deep) var(--tlp, 0%), transparent var(--tlp, 0%));
+}
+
+.tl-item {
+  position: relative;
+  border-bottom: 1px solid var(--paper-line);
+  z-index: 1;
+}
+
+.tl-head {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 40px;
+  gap: 12px 24px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  padding: 26px 0;
+  min-height: 44px;
+  transition: background .25s;
+}
+
+.tl-head:hover {
+  background: rgba(32, 38, 44, .025);
+}
+
+.tl-period {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: .06em;
+  color: var(--text-dark-2);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tl-period::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--text-dark-2);
+  border-radius: 50%;
+  background: var(--paper);
+  transition: background .3s var(--ease), border-color .3s, transform .3s var(--ease);
+  flex: none;
+  box-shadow: 0 0 0 0 rgba(143, 90, 28, 0);
+}
+
+.tl-item:hover .tl-period::before,
+.tl-item.is-open .tl-period::before {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+  transform: scale(1.15);
+}
+
+.tl-item.lit .tl-period::before {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 4px rgba(143, 90, 28, .15);
+}
+
+.tl-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.3;
+  transition: color .2s;
+}
+
+.tl-item:hover .tl-title {
+  color: var(--gold-deep);
+}
+
+.tl-org {
+  font-size: 14px;
+  color: var(--text-dark-2);
+  margin-top: 2px;
+}
+
+.tl-toggle {
+  justify-self: end;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--paper-line);
+  transition: border-color .25s, background .25s, transform .2s var(--ease);
+}
+
+.tl-toggle:hover {
+  border-color: var(--gold-deep);
+  background: rgba(143, 90, 28, .05);
+  transform: scale(1.08);
+}
+
+.tl-toggle::before, .tl-toggle::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 50%;
+  height: 2px;
+  background: currentColor;
+  transform: translateY(-50%);
+  transition: transform .3s var(--ease), opacity .3s;
+}
+
+.tl-toggle::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.tl-item.is-open .tl-toggle::after {
+  transform: translateY(-50%) rotate(0);
+  opacity: 0;
+}
+
+.tl-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .4s var(--ease);
+}
+
+.tl-item.is-open .tl-body {
+  grid-template-rows: 1fr;
+}
+
+.reduce-motion .tl-body {
+  transition: none;
+}
+
+.tl-body > div {
+  overflow: hidden;
+}
+
+.tl-body-in {
+  padding: 0 0 32px 204px;
+  animation: tl-content-in .45s var(--ease) both;
+}
+
+@keyframes tl-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reduce-motion .tl-body-in {
+  animation: none;
+}
+
+.tl-sum {
+  color: var(--text-dark-2);
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.tl-detail {
+  margin-top: 14px;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.tl-rel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--text-dark-2);
+}
+
+.tl-rel button {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--paper-line);
+  border-radius: 17px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--text-dark);
+  transition: border-color .25s, color .25s, background .25s, transform .15s;
+}
+
+.tl-rel button:hover {
+  border-color: var(--gold-deep);
+  color: var(--gold-deep);
+  background: rgba(143, 90, 28, .06);
+  transform: translateY(-1px);
+}
+
+.tl-rel button:active {
+  transform: translateY(0);
+}
+
+/* 响应式 */
+@media (max-width: 960px) {
+  .tl-body-in {
+    padding-left: 0;
+  }
+
+  .tl-head {
+    grid-template-columns: 1fr 40px;
+  }
+
+  .tl-period {
+    grid-column: 1 / -1;
+  }
+}

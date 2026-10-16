@@ -1,0 +1,65 @@
+/* ==========================================================================
+   项目检索台 / 行组装 / 预览连线 / 时间线 / 标题故障闪
+   ========================================================================== */
+
+/* 终端风检索条：状态数字都来自真实筛选结果 */
+.tui { margin-bottom: 36px; border: 1px solid var(--text-dark); background: var(--ink); color: var(--text-light); font-family: var(--font-mono); }
+.tui-top { display: flex; justify-content: space-between; gap: 16px; padding: 8px 14px; font-size: 11px; letter-spacing: .16em; color: var(--steel); border-bottom: 1px solid var(--ink-line); }
+.tui-top b { font-weight: 400; color: var(--gold); }
+.tui-in { display: flex; align-items: center; gap: 12px; padding: 0 14px; min-height: 52px; }
+.tui-in .prompt { color: var(--gold); font-size: 16px; }
+.tui-in input { flex: 1; min-width: 0; min-height: 44px; background: transparent; border: 0; outline: 0; color: var(--text-light); font: inherit; font-size: 15px; caret-color: var(--gold); }
+.tui-in input::placeholder { color: var(--steel); }
+.tui:focus-within { box-shadow: 0 0 0 2px var(--gold); }
+.tui-tags { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 14px 14px; }
+.tui-tags button { min-height: 30px; padding: 0 12px; font-size: 12px; border: 1px solid var(--ink-line); border-radius: 15px; color: var(--text-light-2); transition: border-color .2s, color .2s, background .2s; }
+.tui-tags button:hover { border-color: var(--mist); color: var(--text-light); }
+.tui-tags button[aria-pressed="true"] { border-color: var(--gold); color: var(--gold); background: rgba(223, 166, 106, .1); }
+.tui-empty { padding: 28px 8px; font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; color: var(--text-dark-2); }
+.tui-empty button { margin-left: 12px; min-height: 36px; border-bottom: 1px solid var(--gold-deep); color: var(--text-dark); }
+
+/* 列表行：从倾斜、后退的状态拼合回平面 */
+.proj-layout { position: relative; }
+.proj-row { opacity: 0; transform: perspective(1000px) translate3d(0, 38px, -110px) rotateX(-24deg); transform-origin: 50% 100%;
+  transition: opacity .6s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--i, 0) * 110ms); }
+.proj-layout.in .proj-row { opacity: 1; transform: none; }
+.proj-row.is-flip { transition: transform .45s var(--ease); transition-delay: 0s; }
+.reduce-motion .proj-row { opacity: 1; transform: none; transition: none; }
+.proj-row[hidden] { display: none; }
+.meter { position: absolute; left: 20px; right: 8px; bottom: -1px; height: 2px; pointer-events: none; }
+.meter::after { content: ""; position: absolute; inset: 0; background: var(--gold-deep); transform: scaleX(var(--m, 0)); transform-origin: left; transition: transform .5s var(--ease); }
+
+/* 活动行 → 预览卡 的连线 */
+.link-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 3; }
+.link-svg path { fill: none; stroke: var(--gold-deep); stroke-width: 1.2; stroke-dasharray: 4 6; animation: dash 1.4s linear infinite; }
+.link-svg circle { fill: var(--gold-deep); }
+@keyframes dash { to { stroke-dashoffset: -20; } }
+.reduce-motion .link-svg path { animation: none; }
+
+/* 预览卡里的节点依次出现、连线描出 */
+.pv-node { animation: pv-in .5s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 60ms); }
+.pv-link { stroke-dasharray: 1; animation: pv-draw .7s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes pv-in { from { opacity: 0; } }
+@keyframes pv-draw { from { stroke-dashoffset: 1; } }
+.reduce-motion .pv-node, .reduce-motion .pv-link { animation: none; }
+
+/* 经历时间线：金线随滚动向下画出，经过的节点点亮 */
+.tl::before, .tl::after { content: ""; position: absolute; left: 4px; top: 0; bottom: 0; width: 1px; }
+.tl::before { background: var(--paper-line); }
+.tl::after { background: var(--gold-deep); transform: scaleY(var(--tlp, 0)); transform-origin: top; }
+.tl-item { z-index: 1; }
+.tl-item.lit .tl-period::before { background: var(--gold-deep); border-color: var(--gold-deep); }
+
+/* 标题进入时的一次性故障闪（冷色与暖色的错位残影，之后恢复） */
+.sec-head.in h2 { animation: glitch .62s steps(1) 1; }
+@keyframes glitch {
+  0% { text-shadow: 4px 0 var(--mist), -4px 0 var(--gold); transform: translateX(-3px); }
+  18% { text-shadow: -5px 0 var(--mist), 5px 0 var(--gold); transform: translateX(4px) skewX(-5deg); }
+  36% { text-shadow: 3px 0 var(--mist), -3px 0 var(--gold); transform: translateX(-2px); clip-path: inset(0 0 40% 0); }
+  54% { text-shadow: -2px 0 var(--mist), 2px 0 var(--gold); transform: translateX(2px); clip-path: inset(30% 0 0 0); }
+  72% { text-shadow: 1px 0 var(--mist), -1px 0 var(--gold); transform: none; clip-path: none; }
+  100% { text-shadow: none; transform: none; }
+}
+.reduce-motion .sec-head.in h2 { animation: none; }
+.hero-beat .beat-l1, .hero-beat .beat-l2 { font-size: clamp(34px, 6.4vw, 96px); }
+.hero-beat { top: clamp(80px, 13vh, 150px); }

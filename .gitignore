@@ -1,0 +1,17 @@
+# 过程资产与历史素材（不进仓库）
+_archive/
+_checks/
+.dsh-im/
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# 依赖（本项目零依赖，留着以防将来引入）
+node_modules/
+
+# 日志
+*.log

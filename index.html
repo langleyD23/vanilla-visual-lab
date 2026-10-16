@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Visual Lab · 原生前端视觉实现</title>
+  <meta name="description" content="零依赖的前端视觉实现集合：WebGL 文字海、Three.js 代码城市、Canvas 文字标志与分层降级策略。纯 HTML / CSS / 原生 JS。">
+  <meta name="theme-color" content="#0B1015">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/fx-hero.css">
+  <link rel="stylesheet" href="css/fx-sections.css">
+  <link rel="stylesheet" href="css/fx-motion.css">
+  <link rel="stylesheet" href="css/city.css">
+  <link rel="stylesheet" href="css/experience.css">
+  <link rel="stylesheet" href="css/skills.css">
+  <link rel="stylesheet" href="css/art-direction.css">
+  <link rel="stylesheet" href="css/ai-symbols.css">
+  <link rel="stylesheet" href="css/project-content.css">
+  <link rel="stylesheet" href="css/blueprint.css">
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+  <a class="skip" href="#main">跳到正文</a>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#home" aria-label="回到首页">
+      <span class="lmark" aria-hidden="true"></span>
+      <span class="brand-name">VISUAL LAB</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="主导航"></nav>
+    <div class="header-tools">
+      <button class="tool-btn" id="motionToggle" type="button" aria-pressed="false" title="减少动态效果">
+        <span class="tool-dot" aria-hidden="true"></span><span class="tool-text">动效</span>
+      </button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">
+        <span class="menu-label">菜单</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript><p class="noscript">此页面需要启用 JavaScript 才能显示内容。</p></noscript>
+  </main>
+
+  <div id="detail" class="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle" hidden></div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/field.js"></script>
+  <script src="js/sea-shaders.js"></script>
+  <script src="js/sea.js"></script>
+  <script src="js/fx-core.js"></script>
+  <script src="js/folio-transition.js"></script>
+  <script src="js/code-city.js"></script>
+  <script src="js/city-integration.js"></script>
+  <script src="js/fx-terrain.js"></script>
+  <script src="js/ai-symbol-masks.js"></script>
+  <script src="js/ai-symbols.js"></script>
+  <script src="js/project-blueprints.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

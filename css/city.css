@@ -1,0 +1,438 @@
+/* ==========================================================================
+   Code City 样式 · 代码成为建筑
+   左侧项目索引（35-40%），右侧城市舞台（60-65%）
+   ========================================================================== */
+
+/* ---------- 项目区整体布局 ---------- */
+.proj-section {
+  position: relative;
+  background: var(--ink);
+  color: var(--text-light);
+  padding: 0;
+  overflow: hidden;
+}
+
+.proj-city-layout {
+  display: grid;
+  grid-template-columns: minmax(360px, 38%) 1fr;
+  min-height: 90vh;
+  gap: 0;
+}
+
+/* 左侧：项目索引区 */
+.proj-index-panel {
+  position: relative;
+  z-index: 2;
+  padding: clamp(56px, 9vw, 100px) var(--gutter) clamp(48px, 7vw, 80px);
+  background: rgba(11, 16, 21, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid var(--ink-line);
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.proj-city-header {
+  margin-bottom: clamp(32px, 5vw, 48px);
+}
+
+.proj-city-header .sec-no {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .16em;
+  color: var(--steel);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.proj-city-header h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(38px, 5.5vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin: 0;
+}
+
+.proj-city-header .subtitle {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.proj-city-lead {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-light-2);
+  max-width: 46ch;
+}
+
+/* 项目索引列表 */
+.proj-index-list {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.proj-index-item {
+  position: relative;
+  display: block;
+  padding: 18px 16px 18px 14px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: background .25s var(--ease), border-color .25s;
+  cursor: pointer;
+}
+
+.proj-index-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--gold);
+  transition: height .28s var(--ease);
+}
+
+.proj-index-item:hover,
+.proj-index-item:focus-visible {
+  background: rgba(237, 232, 222, .04);
+  border-color: var(--ink-line);
+}
+
+.proj-index-item.is-active::before {
+  height: 70%;
+}
+
+.proj-index-item.is-active {
+  background: rgba(223, 166, 106, .08);
+  border-color: rgba(223, 166, 106, .2);
+}
+
+.proj-index-no {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--steel);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.proj-index-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin-bottom: 6px;
+}
+
+.proj-index-type {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-light-2);
+}
+
+.proj-index-summary {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-light-2);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .35s var(--ease), opacity .35s, margin-top .35s;
+}
+
+.proj-index-item.is-active .proj-index-summary,
+.proj-index-item:hover .proj-index-summary {
+  max-height: 200px;
+  opacity: 1;
+}
+
+.proj-index-cta {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .3s, transform .3s var(--ease);
+}
+
+.proj-index-item.is-active .proj-index-cta {
+  opacity: 1;
+  transform: none;
+}
+
+.proj-index-cta .arrow {
+  transition: transform .2s var(--ease);
+}
+
+.proj-index-cta:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* 右侧：城市舞台 */
+.proj-city-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 65% 35%, #0d1318 0%, var(--ink) 70%);
+  overflow: hidden;
+}
+
+.city-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+}
+
+#cityCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 城市控制条 */
+.city-controls {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  background: rgba(11, 16, 21, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--ink-line);
+  border-radius: 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--text-light-2);
+  opacity: 0;
+  transition: opacity .4s;
+}
+
+.city-controls.visible {
+  opacity: 1;
+}
+
+.city-control-btn {
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--ink-line);
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  color: var(--text-light);
+  transition: border-color .2s, background .2s;
+}
+
+.city-control-btn:hover {
+  border-color: var(--gold);
+  background: rgba(223, 166, 106, .08);
+}
+
+.city-status {
+  padding: 0 8px;
+  color: var(--steel);
+}
+
+/* 城市信息面板（hover时显示项目详情） */
+.city-info-panel {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  z-index: 5;
+  max-width: 340px;
+  padding: 22px 24px;
+  background: rgba(11, 16, 21, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--ink-line);
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+
+.city-info-panel.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.city-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--steel);
+}
+
+.city-info-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.3;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+
+.city-info-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-light-2);
+  margin-bottom: 14px;
+}
+
+.city-info-meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-line);
+  font-size: 13px;
+}
+
+.city-info-meta dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--steel);
+  padding-top: 2px;
+}
+
+.city-info-meta dd {
+  color: var(--text-light-2);
+}
+
+/* 降级：WebGL不可用时显示的静态示意图 */
+.city-fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  padding: 48px;
+  text-align: center;
+}
+
+.city-fallback.active {
+  display: flex;
+}
+
+.city-fallback-content {
+  max-width: 480px;
+}
+
+.city-fallback-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  opacity: .5;
+}
+
+.city-fallback-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+
+.city-fallback-desc {
+  font-size: 14px;
+  color: var(--text-light-2);
+  line-height: 1.6;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1100px) {
+  .proj-city-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .proj-index-panel {
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--ink-line);
+  }
+
+  .proj-city-stage {
+    min-height: 480px;
+  }
+
+  .city-info-panel {
+    top: 24px;
+    right: 24px;
+    max-width: 300px;
+    padding: 18px 20px;
+  }
+
+  .city-controls {
+    bottom: 24px;
+  }
+}
+
+@media (max-width: 760px) {
+  .proj-index-panel {
+    padding: 40px 20px;
+  }
+
+  .proj-city-stage {
+    min-height: 360px;
+  }
+
+  .city-info-panel {
+    display: none; /* 手机上用索引面板替代 */
+  }
+
+  .city-controls {
+    bottom: 16px;
+    font-size: 10px;
+    padding: 8px 14px;
+  }
+
+  .city-control-btn {
+    min-height: 28px;
+    padding: 0 12px;
+    font-size: 10px;
+  }
+}
+
+/* 减少动态模式 */
+.reduce-motion .proj-index-item,
+.reduce-motion .proj-index-summary,
+.reduce-motion .proj-index-cta,
+.reduce-motion .city-controls,
+.reduce-motion .city-info-panel {
+  transition: none;
+}
+
+.reduce-motion .proj-index-item::before {
+  transition: none;
+}
